@@ -310,14 +310,18 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Game Type</label>
-                <select class="form-select" id="serverType">
+                <select class="form-select" id="serverType" onchange="updateAddressPlaceholder()">
                     <option value="minecraft-java">Minecraft Java Edition</option>
                     <option value="minecraft-bedrock">Minecraft Bedrock Edition</option>
+                    <option value="minecraft-bedrock-realm">Minecraft Bedrock Realm</option>
                 </select>
             </div>
             <div class="form-group">
                 <label class="form-label">Server Address</label>
                 <input type="text" class="form-input" id="serverAddress" placeholder="mc.example.com:25565">
+                <div style="font-size: 0.85rem; color: #718096; margin-top: 4px;" id="addressHint">
+                    Enter IP:Port for servers
+                </div>
             </div>
             <div class="modal-buttons">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
@@ -332,6 +336,23 @@
 
         function saveServers() {
             localStorage.setItem('gameServers', JSON.stringify(servers));
+        }
+
+        function updateAddressPlaceholder() {
+            const type = document.getElementById('serverType').value;
+            const addressInput = document.getElementById('serverAddress');
+            const hint = document.getElementById('addressHint');
+            
+            if (type === 'minecraft-java') {
+                addressInput.placeholder = 'mc.example.com:25565';
+                hint.textContent = 'Enter IP:Port for Java servers';
+            } else if (type === 'minecraft-bedrock') {
+                addressInput.placeholder = 'bedrock.example.com:19132';
+                hint.textContent = 'Enter IP:Port for Bedrock servers (default port: 19132)';
+            } else if (type === 'minecraft-bedrock-realm') {
+                addressInput.placeholder = 'realm.address.com or realm code';
+                hint.textContent = 'Enter the Realm address or join code';
+            }
         }
 
         function openModal() {
@@ -378,46 +399,36 @@
 
         async function checkMinecraftServer(server) {
             try {
-                // Using mcsrvstat.us API for Minecraft server status
-                const apiUrl = server.type === 'minecraft-java' 
-                    ? `https://api.mcsrvstat.us/3/${server.address}`
-                    : `https://api.mcstatus.io/v2/status/bedrock/${server.address}`;
+                let apiUrl;
+                
+                // For Bedrock Realms, try to use the Bedrock API
+                if (server.type === 'minecraft-bedrock-realm' || server.type === 'minecraft-bedrock') {
+                    // Try mcstatus.io API for Bedrock
+                    const address = server.address.replace(/:\d+$/, ''); // Remove port if exists
+                    const port = server.address.includes(':') ? server.address.split(':')[1] : '19132';
+                    apiUrl = `https://api.mcsrvstat.us/bedrock/3/${address}:${port}`;
+                } else {
+                    // Java Edition
+                    apiUrl = `https://api.mcsrvstat.us/3/${server.address}`;
+                }
 
                 const response = await fetch(apiUrl);
                 const data = await response.json();
 
-                if (server.type === 'minecraft-java') {
-                    if (data.online) {
-                        return {
-                            online: true,
-                            players: {
-                                online: data.players.online,
-                                max: data.players.max,
-                                list: data.players.list || []
-                            },
-                            version: data.version,
-                            motd: data.motd?.clean?.[0] || 'No MOTD',
-                            ping: data.debug?.ping || 'N/A'
-                        };
-                    } else {
-                        return { online: false };
-                    }
+                if (data.online) {
+                    return {
+                        online: true,
+                        players: {
+                            online: data.players?.online || 0,
+                            max: data.players?.max || 0,
+                            list: data.players?.list || []
+                        },
+                        version: data.version || 'Unknown',
+                        motd: data.motd?.clean?.[0] || data.motd?.clean || 'No MOTD',
+                        ping: data.debug?.ping || 'N/A'
+                    };
                 } else {
-                    // Bedrock handling
-                    if (data.online) {
-                        return {
-                            online: true,
-                            players: {
-                                online: data.players.online,
-                                max: data.players.max,
-                                list: []
-                            },
-                            version: data.version?.name,
-                            motd: data.motd?.clean || 'No MOTD'
-                        };
-                    } else {
-                        return { online: false };
-                    }
+                    return { online: false };
                 }
             } catch (error) {
                 console.error('Error checking server:', error);
@@ -446,6 +457,12 @@
             servers.forEach(server => {
                 const card = document.createElement('div');
                 card.className = 'server-card';
+
+                // Get server type label
+                let typeLabel = '';
+                if (server.type === 'minecraft-java') typeLabel = '☕ Java';
+                else if (server.type === 'minecraft-bedrock') typeLabel = '🪨 Bedrock';
+                else if (server.type === 'minecraft-bedrock-realm') typeLabel = '🌎 Bedrock Realm';
 
                 let statusBadge = '';
                 let serverInfo = '';
@@ -507,7 +524,7 @@
                         ${statusBadge}
                     </div>
                     <div style="color: #718096; font-size: 0.9rem; margin-bottom: 8px;">
-                        📍 ${server.address}
+                        ${typeLabel} • 📍 ${server.address}
                     </div>
                     ${serverInfo}
                     <div style="margin-top: 16px; display: flex; gap: 8px;">
