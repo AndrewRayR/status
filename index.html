@@ -330,20 +330,6 @@
         // Load servers from localStorage
         let servers = JSON.parse(localStorage.getItem('gameServers')) || [];
 
-        // Initialize with example server if empty
-        if (servers.length === 0) {
-            servers = [
-                {
-                    id: Date.now(),
-                    name: "Example Minecraft Server",
-                    type: "minecraft-java",
-                    address: "mc.hypixel.net",
-                    status: null
-                }
-            ];
-            saveServers();
-        }
-
         function saveServers() {
             localStorage.setItem('gameServers', JSON.stringify(servers));
         }
