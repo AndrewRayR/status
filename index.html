@@ -1021,13 +1021,26 @@
         // ============================================
         // FUNCTION: updateLastChecked()
         // Updates the timestamp at bottom of page
+        // Shows live time that updates every second
         // ============================================
 
         function updateLastChecked() {
             const lastUpdated = document.getElementById('lastUpdated');
-            const now = new Date().toLocaleString();
-            lastUpdated.textContent = `Last updated: ${now}`;
+            const now = new Date();
+            
+            // Format time with hours, minutes, and seconds
+            const timeString = now.toLocaleTimeString();
+            const dateString = now.toLocaleDateString();
+            
+            lastUpdated.textContent = `Last updated: ${dateString} ${timeString}`;
         }
+
+        // ============================================
+        // LIVE CLOCK UPDATE
+        // Updates the "Last updated" time every second
+        // ============================================
+        
+        setInterval(updateLastChecked, 1000); // Update every 1 second (1000ms)
 
         // ============================================
         // FUNCTION: refreshAll()
