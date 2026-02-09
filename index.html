@@ -11,7 +11,7 @@
            GLOBAL STYLES
            These styles apply to all elements on the page
            ============================================ */
-        
+
         * {
             margin: 0;
             padding: 0;
@@ -23,7 +23,7 @@
            Change the gradient colors here for different background
            Current: Purple gradient (from #667eea to #764ba2)
            ============================================ */
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             /* Background gradient - change these colors to customize */
@@ -36,7 +36,7 @@
            MAIN CONTAINER
            Controls the maximum width of content
            ============================================ */
-        
+
         .container {
             max-width: 1200px; /* Change this to make content wider/narrower */
             margin: 0 auto;
@@ -46,7 +46,7 @@
            HEADER SECTION
            The title and subtitle at the top of the page
            ============================================ */
-        
+
         header {
             text-align: center;
             color: white;
@@ -68,7 +68,7 @@
            Layout for server cards - uses CSS Grid
            Change grid-template-columns to adjust card sizes
            ============================================ */
-        
+
         .servers-grid {
             display: grid;
             /* Auto-fit cards, minimum 350px wide */
@@ -81,7 +81,7 @@
            SERVER CARD
            Individual card styling for each server
            ============================================ */
-        
+
         .server-card {
             background: white; /* Card background color */
             border-radius: 12px; /* Rounded corners */
@@ -100,7 +100,7 @@
            SERVER CARD HEADER
            Top section of each card with name and status
            ============================================ */
-        
+
         .server-header {
             display: flex;
             justify-content: space-between; /* Space between name and status */
@@ -119,7 +119,7 @@
            Colored badges showing online/offline status
            Change background colors to customize badge colors
            ============================================ */
-        
+
         .status-badge {
             padding: 6px 12px;
             border-radius: 20px; /* Very rounded corners for pill shape */
@@ -150,7 +150,7 @@
            SERVER INFORMATION SECTION
            Displays server details like players, version, ping
            ============================================ */
-        
+
         .server-info {
             margin-top: 16px;
         }
@@ -180,19 +180,34 @@
            PLAYERS LIST
            Box showing list of online players
            ============================================ */
-        
+
         .players-list {
             margin-top: 12px;
             padding: 12px;
             background: #f7fafc; /* Light gray background */
             border-radius: 8px;
-            max-height: 150px; /* Maximum height before scrolling */
+            max-height: 200px; /* Maximum height before scrolling */
             overflow-y: auto; /* Scroll if too many players */
         }
 
         .player-item {
-            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
             color: #4a5568; /* Gray text for player names */
+        }
+
+        /* Player avatar image styling */
+        .player-avatar {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 4px;
+            image-rendering: pixelated; /* Keep Minecraft's pixelated look */
+        }
+
+        .player-name {
+            font-weight: 500;
         }
 
         .no-players {
@@ -204,7 +219,7 @@
            ERROR MESSAGES
            Red text for error messages
            ============================================ */
-        
+
         .error-message {
             color: #f56565; /* Red error text */
             font-size: 0.9rem;
@@ -215,7 +230,7 @@
            ADD SERVER BUTTON
            The "+ Add Server" button with dashed border
            ============================================ */
-        
+
         .add-server-btn {
             background: white;
             color: #667eea; /* Purple text - matches gradient */
@@ -240,7 +255,7 @@
            MODAL (POPUP) OVERLAY
            Dark overlay when adding a new server
            ============================================ */
-        
+
         .modal {
             display: none; /* Hidden by default */
             position: fixed;
@@ -262,7 +277,7 @@
            MODAL CONTENT BOX
            The white box that appears in the center
            ============================================ */
-        
+
         .modal-content {
             background: white;
             padding: 32px;
@@ -282,7 +297,7 @@
            FORM ELEMENTS
            Input fields and dropdowns in the modal
            ============================================ */
-        
+
         .form-group {
             margin-bottom: 16px; /* Space between form fields */
         }
@@ -312,7 +327,7 @@
            MODAL BUTTONS
            Cancel and Add Server buttons
            ============================================ */
-        
+
         .modal-buttons {
             display: flex;
             gap: 12px; /* Space between buttons */
@@ -354,7 +369,7 @@
            FOOTER TEXT
            "Last updated" timestamp at bottom
            ============================================ */
-        
+
         .last-updated {
             text-align: center;
             color: white;
@@ -366,7 +381,7 @@
            REFRESH ALL BUTTON
            Button at top to refresh all servers
            ============================================ */
-        
+
         .refresh-btn {
             background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
             color: white;
@@ -394,7 +409,7 @@
          Everything on the page is inside this container
          ============================================ -->
     <div class="container">
-        
+
         <!-- ============================================
              HEADER SECTION
              Page title and subtitle
@@ -427,6 +442,12 @@
         <button class="add-server-btn" onclick="openModal()">+ Add Server</button>
 
         <!-- ============================================
+             ADD WEBSITE BUTTON
+             Opens the popup to add a new website
+             ============================================ -->
+        <button class="add-server-btn" onclick="openWebsiteModal()" style="margin-top: 10px;">+ Add Website</button>
+
+        <!-- ============================================
              LAST UPDATED TIMESTAMP
              Shows when the page last checked servers
              JavaScript updates this automatically
@@ -440,16 +461,16 @@
          ============================================ -->
     <div class="modal" id="addServerModal">
         <div class="modal-content">
-            
+
             <!-- Modal title -->
             <h2 class="modal-header">Add New Server</h2>
-            
+
             <!-- Server Name input field -->
             <div class="form-group">
                 <label class="form-label">Name</label>
                 <input type="text" class="form-input" id="serverName" placeholder="My Minecraft Server">
             </div>
-            
+
             <!-- Game Type dropdown menu -->
             <div class="form-group">
                 <label class="form-label">Server Type</label>
@@ -459,7 +480,7 @@
                     <option value="minecraft-bedrock-realm">Minecraft Bedrock Realm</option>
                 </select>
             </div>
-            
+
             <!-- Server Address input field -->
             <div class="form-group">
                 <label class="form-label">Server Address</label>
@@ -469,11 +490,45 @@
                     Enter IP:Port for servers
                 </div>
             </div>
-            
+
             <!-- Cancel and Add buttons -->
             <div class="modal-buttons">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                 <button class="btn btn-primary" onclick="addServer()">Add Server</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ADD WEBSITE MODAL (POPUP)
+         This appears when you click "+ Add Website"
+         ============================================ -->
+    <div class="modal" id="addWebsiteModal">
+        <div class="modal-content">
+
+            <!-- Modal title -->
+            <h2 class="modal-header">Add New Website</h2>
+
+            <!-- Website Name input field -->
+            <div class="form-group">
+                <label class="form-label">Website Name</label>
+                <input type="text" class="form-input" id="websiteName" placeholder="My Website">
+            </div>
+
+            <!-- Website URL input field -->
+            <div class="form-group">
+                <label class="form-label">Website URL</label>
+                <input type="url" class="form-input" id="websiteUrl" placeholder="https://example.com">
+                <!-- Hint text -->
+                <div style="font-size: 0.85rem; color: #718096; margin-top: 4px;">
+                    Enter the full URL including https://
+                </div>
+            </div>
+
+            <!-- Cancel and Add buttons -->
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeWebsiteModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="addWebsite()">Add Website</button>
             </div>
         </div>
     </div>
@@ -489,7 +544,7 @@
         // Servers are stored in browser's localStorage
         // This means your servers persist even after closing the browser
         // ============================================
-        
+
         // Load servers from localStorage (or empty array if none saved)
         let servers = JSON.parse(localStorage.getItem('gameServers')) || [];
 
@@ -498,7 +553,7 @@
         // Saves the servers array to localStorage
         // Called whenever servers are added, removed, or updated
         // ============================================
-        
+
         function saveServers() {
             localStorage.setItem('gameServers', JSON.stringify(servers));
         }
@@ -508,12 +563,12 @@
         // Changes the placeholder text and hint based on server type
         // Called when user changes the dropdown in "Add Server" modal
         // ============================================
-        
+
         function updateAddressPlaceholder() {
             const type = document.getElementById('serverType').value;
             const addressInput = document.getElementById('serverAddress');
             const hint = document.getElementById('addressHint');
-            
+
             // Update placeholder and hint based on server type
             if (type === 'minecraft-java') {
                 addressInput.placeholder = 'mc.example.com:25565';
@@ -531,7 +586,7 @@
         // FUNCTION: openModal()
         // Shows the "Add Server" popup
         // ============================================
-        
+
         function openModal() {
             document.getElementById('addServerModal').classList.add('active');
         }
@@ -540,7 +595,7 @@
         // FUNCTION: closeModal()
         // Hides the "Add Server" popup and clears the form
         // ============================================
-        
+
         function closeModal() {
             // Hide the modal
             document.getElementById('addServerModal').classList.remove('active');
@@ -550,11 +605,33 @@
         }
 
         // ============================================
+        // FUNCTION: openWebsiteModal()
+        // Shows the "Add Website" popup
+        // ============================================
+
+        function openWebsiteModal() {
+            document.getElementById('addWebsiteModal').classList.add('active');
+        }
+
+        // ============================================
+        // FUNCTION: closeWebsiteModal()
+        // Hides the "Add Website" popup and clears the form
+        // ============================================
+
+        function closeWebsiteModal() {
+            // Hide the modal
+            document.getElementById('addWebsiteModal').classList.remove('active');
+            // Clear all input fields
+            document.getElementById('websiteName').value = '';
+            document.getElementById('websiteUrl').value = '';
+        }
+
+        // ============================================
         // FUNCTION: addServer()
         // Creates a new server from the form data
         // Validates input and adds to servers array
         // ============================================
-        
+
         function addServer() {
             // Get values from form fields
             const name = document.getElementById('serverName').value.trim();
@@ -580,8 +657,49 @@
             saveServers();
             closeModal();
             renderServers();
-            
+
             // Immediately check the new server's status
+            checkServer(servers[servers.length - 1]);
+        }
+
+        // ============================================
+        // FUNCTION: addWebsite()
+        // Creates a new website from the form data
+        // Validates input and adds to servers array
+        // ============================================
+
+        function addWebsite() {
+            // Get values from form fields
+            const name = document.getElementById('websiteName').value.trim();
+            const url = document.getElementById('websiteUrl').value.trim();
+
+            // Validate that name and URL are filled in
+            if (!name || !url) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Validate URL format
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('Please enter a valid URL starting with http:// or https://');
+                return;
+            }
+
+            // Create new website object and add to array
+            servers.push({
+                id: Date.now(), // Unique ID based on current timestamp
+                name: name,
+                type: 'website',
+                address: url,
+                status: null // Status will be filled in when checked
+            });
+
+            // Save to localStorage, close modal, and update display
+            saveServers();
+            closeWebsiteModal();
+            renderServers();
+
+            // Immediately check the new website's status
             checkServer(servers[servers.length - 1]);
         }
 
@@ -590,7 +708,7 @@
         // Deletes a server from the list
         // Shows confirmation dialog before deleting
         // ============================================
-        
+
         function removeServer(id) {
             // Ask for confirmation before deleting
             if (confirm('Are you sure you want to remove this server?')) {
@@ -607,11 +725,11 @@
         // Uses free API: mcsrvstat.us
         // Returns server status data or error
         // ============================================
-        
+
         async function checkMinecraftServer(server) {
             try {
                 let apiUrl;
-                
+
                 // Build API URL based on server type
                 if (server.type === 'minecraft-bedrock-realm' || server.type === 'minecraft-bedrock') {
                     // For Bedrock servers and Realms
@@ -652,27 +770,69 @@
         }
 
         // ============================================
+        // FUNCTION: checkWebsite(server)
+        // Checks if a website is online
+        // Uses a ping service to check website availability
+        // ============================================
+
+        async function checkWebsite(server) {
+            try {
+                // Try to fetch the website with a timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+                const startTime = Date.now();
+                const response = await fetch(server.address, {
+                    method: 'HEAD',
+                    mode: 'no-cors', // Allow checking without CORS
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                const ping = Date.now() - startTime;
+
+                // In no-cors mode, we can't read the response, but if fetch succeeds, site is up
+                return {
+                    online: true,
+                    ping: ping
+                };
+            } catch (error) {
+                // Website is offline or unreachable
+                console.error('Error checking website:', error);
+                return { 
+                    online: false, 
+                    error: error.name === 'AbortError' ? 'Timeout' : error.message 
+                };
+            }
+        }
+
+        // ============================================
         // FUNCTION: checkServer(server)
         // Checks a single server's status
         // Updates the server in the array and re-renders
         // ============================================
-        
+
         async function checkServer(server) {
             // Find the server in our array
             const serverIndex = servers.findIndex(s => s.id === server.id);
-            
+
             // Mark as "checking" and update display
             servers[serverIndex].checking = true;
             renderServers();
 
-            // Check the server status (this takes a moment)
-            const status = await checkMinecraftServer(server);
-            
+            // Check the server status based on type
+            let status;
+            if (server.type === 'website') {
+                status = await checkWebsite(server);
+            } else {
+                status = await checkMinecraftServer(server);
+            }
+
             // Update server with status results
             servers[serverIndex].status = status;
             servers[serverIndex].checking = false;
             servers[serverIndex].lastChecked = new Date().toISOString();
-            
+
             // Save and update display
             saveServers();
             renderServers();
@@ -683,7 +843,7 @@
         // Creates HTML for all server cards and displays them
         // This is the main function that builds the visual display
         // ============================================
-        
+
         function renderServers() {
             const grid = document.getElementById('serversGrid');
             grid.innerHTML = ''; // Clear existing cards
@@ -698,6 +858,7 @@
                 if (server.type === 'minecraft-java') typeLabel = '☕ Java';
                 else if (server.type === 'minecraft-bedrock') typeLabel = '🪨 Bedrock';
                 else if (server.type === 'minecraft-bedrock-realm') typeLabel = '🌎 Bedrock Realm';
+                else if (server.type === 'website') typeLabel = '🌐 Website';
 
                 let statusBadge = '';
                 let serverInfo = '';
@@ -706,7 +867,7 @@
                 // BUILD STATUS BADGE
                 // Shows "Checking...", "Online", or "Offline"
                 // ============================================
-                
+
                 if (server.checking) {
                     // Currently checking status
                     statusBadge = '<span class="status-badge status-checking">Checking...</span>';
@@ -716,60 +877,92 @@
                 } else if (server.status.online) {
                     // Server is online - show green badge
                     statusBadge = '<span class="status-badge status-online">Online</span>';
-                    
+
                     // ============================================
                     // BUILD SERVER INFO
                     // Shows players, version, ping when online
+                    // Different info for websites vs game servers
                     // ============================================
-                    
-                    serverInfo = `
-                        <div class="server-info">
-                            <!-- Player count row -->
-                            <div class="info-row">
-                                <span class="info-label">Players</span>
-                                <span class="info-value">${server.status.players.online}/${server.status.players.max}</span>
-                            </div>
-                            
-                            <!-- Version row (if available) -->
-                            ${server.status.version ? `
-                            <div class="info-row">
-                                <span class="info-label">Version</span>
-                                <span class="info-value">${server.status.version}</span>
-                            </div>
-                            ` : ''}
-                            
-                            <!-- Ping row (if available) -->
-                            ${server.status.ping ? `
-                            <div class="info-row">
-                                <span class="info-label">Ping</span>
-                                <span class="info-value">${server.status.ping}ms</span>
-                            </div>
-                            ` : ''}
-                        </div>
-                    `;
 
-                    // ============================================
-                    // BUILD PLAYER LIST
-                    // Shows names of online players (if available)
-                    // ============================================
-                    
-                    if (server.status.players.list && server.status.players.list.length > 0) {
-                        // Server provides player names - show them
-                        serverInfo += `
-                            <div class="players-list">
-                                <div style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Online Players:</div>
-                                ${server.status.players.list.map(player => 
-                                    `<div class="player-item">• ${player}</div>`
-                                ).join('')}
+                    if (server.type === 'website') {
+                        // Website-specific info
+                        serverInfo = `
+                            <div class="server-info">
+                                <!-- Response time row -->
+                                ${server.status.ping ? `
+                                <div class="info-row">
+                                    <span class="info-label">Response Time</span>
+                                    <span class="info-value">${server.status.ping}ms</span>
+                                </div>
+                                ` : ''}
                             </div>
                         `;
-                    } else if (server.status.players.online > 0) {
-                        // Players online but names not available
-                        serverInfo += `
-                            <div class="players-list">
-                                <div class="no-players">Player list not available</div>
+                    } else {
+                        // Game server info
+                        serverInfo = `
+                            <div class="server-info">
+                                <!-- Player count row -->
+                                <div class="info-row">
+                                    <span class="info-label">Players</span>
+                                    <span class="info-value">${server.status.players.online}/${server.status.players.max}</span>
+                                </div>
+
+                                <!-- Version row (if available) -->
+                                ${server.status.version ? `
+                                <div class="info-row">
+                                    <span class="info-label">Version</span>
+                                    <span class="info-value">${server.status.version}</span>
+                                </div>
+                                ` : ''}
+
+                                <!-- Ping row (if available) -->
+                                ${server.status.ping ? `
+                                <div class="info-row">
+                                    <span class="info-label">Ping</span>
+                                    <span class="info-value">${server.status.ping}ms</span>
+                                </div>
+                                ` : ''}
                             </div>
                         `;
+
+                        // ============================================
+                        // BUILD PLAYER LIST WITH AVATARS (TOP 5)
+                        // Shows names and avatar pictures of top 5 online players
+                        // ============================================
+
+                        if (server.status.players.list && server.status.players.list.length > 0) {
+                            // Limit to top 5 players
+                            const topPlayers = server.status.players.list.slice(0, 5);
+                            const remainingCount = server.status.players.list.length - topPlayers.length;
+
+                            // Server provides player names - show them with avatars
+                            serverInfo += `
+                                <div class="players-list">
+                                    <div style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Top ${topPlayers.length} Players Online:</div>
+                                    ${topPlayers.map(player => `
+                                        <div class="player-item">
+                                            <img class="player-avatar" 
+                                                 src="https://minotar.net/avatar/${player}/32" 
+                                                 alt="${player}"
+                                                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%2232%22 height=%2232%22 fill=%22%23ccc%22/></svg>'">
+                                            <span class="player-name">${player}</span>
+                                        </div>
+                                    `).join('')}
+                                    ${remainingCount > 0 ? `
+                                        <div style="margin-top: 8px; color: #718096; font-size: 0.9rem; font-style: italic;">
+                                            +${remainingCount} more player${remainingCount !== 1 ? 's' : ''} online
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        } else if (server.status.players.online > 0) {
+                            // Players online but names not available
+                            serverInfo += `
+                                <div class="players-list">
+                                    <div class="no-players">Player list not available</div>
+                                </div>
+                            `;
+                        }
                     }
                 } else {
                     // Server is offline - show red badge
@@ -784,7 +977,7 @@
                 // BUILD COMPLETE CARD HTML
                 // Combines all the parts into final card
                 // ============================================
-                
+
                 card.innerHTML = `
                     <!-- Card header with name and status badge -->
                     <div class="server-header">
@@ -823,7 +1016,7 @@
         // FUNCTION: updateLastChecked()
         // Updates the timestamp at bottom of page
         // ============================================
-        
+
         function updateLastChecked() {
             const lastUpdated = document.getElementById('lastUpdated');
             const now = new Date().toLocaleString();
@@ -835,7 +1028,7 @@
         // Checks all servers at once
         // Called by "Refresh All" button and auto-refresh timer
         // ============================================
-        
+
         function refreshAll() {
             servers.forEach(server => checkServer(server));
         }
@@ -844,10 +1037,10 @@
         // PAGE INITIALIZATION
         // Runs when page first loads
         // ============================================
-        
+
         // Display all saved servers
         renderServers();
-        
+
         // Check status of all servers on page load
         refreshAll();
 
@@ -857,7 +1050,7 @@
         // Change 30000 to a different number to adjust frequency
         // (value is in milliseconds: 30000 = 30 seconds)
         // ============================================
-        
+
         setInterval(refreshAll, 30000); // Auto-refresh every 30 seconds
     </script>
 </body>
