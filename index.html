@@ -21,13 +21,13 @@
         /* ============================================
            BODY & BACKGROUND
            Change the gradient colors here for different background
-           Current: Purple gradient (from #667eea to #764ba2)
+           Current: Blue gradient (from black to dark blue)
            ============================================ */
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             /* Background gradient - change these colors to customize */
-            background: linear-gradient(135deg, #000000 0%, #1f0962 100%);
+            background: linear-gradient(135deg, #000000 0%, #0a1628 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -83,17 +83,19 @@
            ============================================ */
 
         .server-card {
-            background: white; /* Card background color */
+            background: #1a1a2e; /* Dark background color */
             border-radius: 12px; /* Rounded corners */
             padding: 24px; /* Inside spacing */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark theme */
             transition: transform 0.2s, box-shadow 0.2s; /* Smooth animation */
+            border: 1px solid #2d2d44; /* Subtle border */
         }
 
         /* Hover effect - card lifts up when mouse hovers over it */
         .server-card:hover {
             transform: translateY(-5px); /* Move up 5px */
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Larger shadow */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); /* Larger shadow */
+            border-color: #3b82f6; /* Blue border on hover */
         }
 
         /* ============================================
@@ -111,7 +113,7 @@
         .server-name {
             font-size: 1.4rem; /* Server name text size */
             font-weight: 600; /* Bold text */
-            color: #2d3748; /* Dark gray text color */
+            color: #e2e8f0; /* Light gray text color for dark theme */
         }
 
         /* ============================================
@@ -159,7 +161,7 @@
             display: flex;
             justify-content: space-between; /* Label on left, value on right */
             padding: 8px 0;
-            border-bottom: 1px solid #e2e8f0; /* Light gray divider line */
+            border-bottom: 1px solid #2d2d44; /* Dark divider line */
         }
 
         .info-row:last-child {
@@ -167,12 +169,12 @@
         }
 
         .info-label {
-            color: #718096; /* Gray label text */
+            color: #a0aec0; /* Light gray label text */
             font-weight: 500;
         }
 
         .info-value {
-            color: #2d3748; /* Dark text for values */
+            color: #e2e8f0; /* Light text for values */
             font-weight: 600;
         }
 
@@ -184,17 +186,18 @@
         .players-list {
             margin-top: 12px;
             padding: 12px;
-            background: #f7fafc; /* Light gray background */
+            background: #0f0f1e; /* Darker background */
             border-radius: 8px;
             max-height: 200px; /* Maximum height before scrolling */
             overflow-y: auto; /* Scroll if too many players */
+            border: 1px solid #2d2d44; /* Subtle border */
         }
 
         .player-item {
             display: flex;
             align-items: center;
             padding: 8px 0;
-            color: #4a5568; /* Gray text for player names */
+            color: #e2e8f0; /* Light text for player names */
         }
 
         /* Player avatar image styling */
@@ -211,7 +214,7 @@
         }
 
         .no-players {
-            color: #a0aec0; /* Light gray for "no players" message */
+            color: #718096; /* Gray for "no players" message */
             font-style: italic;
         }
 
@@ -232,9 +235,9 @@
            ============================================ */
 
         .add-server-btn {
-            background: white;
-            color: #667eea; /* Purple text - matches gradient */
-            border: 2px dashed #667eea; /* Dashed purple border */
+            background: #1a1a2e; /* Dark background */
+            color: #60a5fa; /* Light blue text */
+            border: 2px dashed #3b82f6; /* Dashed blue border */
             padding: 16px;
             border-radius: 12px;
             cursor: pointer;
@@ -244,9 +247,9 @@
             width: 100%;
         }
 
-        /* Hover effect - button turns solid purple */
+        /* Hover effect - button turns solid blue */
         .add-server-btn:hover {
-            background: #667eea; /* Purple background */
+            background: #3b82f6; /* Blue background */
             color: white;
             border-style: solid; /* Solid border instead of dashed */
         }
@@ -279,18 +282,19 @@
            ============================================ */
 
         .modal-content {
-            background: white;
+            background: #1a1a2e; /* Dark background */
             padding: 32px;
             border-radius: 12px;
             max-width: 500px;
             width: 90%; /* 90% of screen width on mobile */
+            border: 1px solid #2d2d44; /* Subtle border */
         }
 
         .modal-header {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 20px;
-            color: #2d3748;
+            color: #e2e8f0; /* Light text */
         }
 
         /* ============================================
@@ -305,22 +309,24 @@
         .form-label {
             display: block;
             margin-bottom: 6px;
-            color: #4a5568; /* Gray label text */
+            color: #a0aec0; /* Light gray label text */
             font-weight: 500;
         }
 
         .form-input, .form-select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #cbd5e0; /* Light gray border */
+            border: 1px solid #2d2d44; /* Dark border */
             border-radius: 6px;
             font-size: 1rem;
+            background: #0f0f1e; /* Dark background */
+            color: #e2e8f0; /* Light text */
         }
 
-        /* Focus effect - purple border when clicking in field */
+        /* Focus effect - blue border when clicking in field */
         .form-input:focus, .form-select:focus {
             outline: none;
-            border-color: #667eea; /* Purple border when focused */
+            border-color: #3b82f6; /* Blue border when focused */
         }
 
         /* ============================================
@@ -345,24 +351,24 @@
             transition: all 0.2s;
         }
 
-        /* Primary button - purple "Add Server" button */
+        /* Primary button - blue "Add Server" button */
         .btn-primary {
-            background: #667eea; /* Purple background */
+            background: #3b82f6; /* Blue background */
             color: white;
         }
 
         .btn-primary:hover {
-            background: #5568d3; /* Darker purple on hover */
+            background: #2563eb; /* Darker blue on hover */
         }
 
         /* Secondary button - gray "Cancel" button */
         .btn-secondary {
-            background: #e2e8f0; /* Light gray background */
-            color: #4a5568; /* Dark gray text */
+            background: #2d2d44; /* Dark gray background */
+            color: #e2e8f0; /* Light text */
         }
 
         .btn-secondary:hover {
-            background: #cbd5e0; /* Darker gray on hover */
+            background: #3d3d54; /* Lighter gray on hover */
         }
 
         /* ============================================
@@ -383,9 +389,9 @@
            ============================================ */
 
         .refresh-btn {
-            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent for dark theme */
             color: white;
-            border: 2px solid white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             padding: 10px 24px;
             border-radius: 6px;
             cursor: pointer;
@@ -396,10 +402,10 @@
             transition: all 0.2s;
         }
 
-        /* Hover effect - turns solid white */
+        /* Hover effect - turns more opaque */
         .refresh-btn:hover {
-            background: white;
-            color: #667eea; /* Purple text */
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
@@ -938,7 +944,7 @@
                             // Server provides player names - show them with avatars
                             serverInfo += `
                                 <div class="players-list">
-                                    <div style="font-weight: 600; margin-bottom: 8px; color: #2d3748;">Top ${topPlayers.length} Players Online:</div>
+                                    <div style="font-weight: 600; margin-bottom: 8px; color: #e2e8f0;">Top ${topPlayers.length} Players Online:</div>
                                     ${topPlayers.map(player => `
                                         <div class="player-item">
                                             <img class="player-avatar" 
@@ -949,7 +955,7 @@
                                         </div>
                                     `).join('')}
                                     ${remainingCount > 0 ? `
-                                        <div style="margin-top: 8px; color: #718096; font-size: 0.9rem; font-style: italic;">
+                                        <div style="margin-top: 8px; color: #a0aec0; font-size: 0.9rem; font-style: italic;">
                                             +${remainingCount} more player${remainingCount !== 1 ? 's' : ''} online
                                         </div>
                                     ` : ''}
@@ -986,7 +992,7 @@
                     </div>
                     
                     <!-- Server type and address -->
-                    <div style="color: #718096; font-size: 0.9rem; margin-bottom: 8px;">
+                    <div style="color: #a0aec0; font-size: 0.9rem; margin-bottom: 8px;">
                         ${typeLabel} • 📍 ${server.address}
                     </div>
                     
